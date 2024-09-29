@@ -90,7 +90,8 @@ datasets/SciCite/ATC/test.csv
 Notebook: SciBERT_Reproduction/SciBERT_Reproduction_3Classes.ipynb
 
 Contents: Model checkpoints will be stored to allow the best model to be used for inference after validation.
-SciBERT Model - 4 Classes (Background/Method/Result_Supportive/Result_Not_Supportive):
+
+#### SciBERT Model - 4 Classes (Background/Method/Result_Supportive/Result_Not_Supportive):
 
 Folder Name: SciBERT_classes4
 
@@ -104,4 +105,30 @@ Notebook: SciBERT_Reproduction/SciBERT_4Classes.ipynb
 Contents: Model checkpoints will be stored for inference after validation.
 
 ---
+
+## Part III: RPI Calculation Based on Citation Intent Semantics
+The RPIs (Relative Performance Indicators) will be calculated based on the citation intent semantics.
+
+Folder Name: RPIs
+
+Datasets:
+datasets/SciCite/train.csv
+datasets/SciCite/dev.csv
+datasets/SciCite/test.csv
+
+Notebook: Citation_Intent_in_RPIs/RPIs.ipynb
+Contents: This notebook will calculate RPIs based on the semantics of citation intent.
+
+---
+
+# How to Run
+To replicate the results:
+
+Clone this repository.
+
+Download the datasets from the mentioned paths.
+
+Run the notebooks in Google Colab using VG100 GPU or your local environment.
+
+Make sure to install all required dependencies listed in each notebook before running them.
 
