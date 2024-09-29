@@ -13,10 +13,64 @@ This project implements various text mining techniques based on neural networks,
 ## Part I: Zero-Shot Classification Models
 Six folders need to be created to store datasets, notebooks, and results of the Zero-Shot Classification Models.
 
-1.Folder 1 – ACT:
+1. Folder 1 – ACT:
 
 Dataset: datasets/ACL_ATC/ATC/train.csv
 
 Notebook: Inference_ZeroShotClassification/ZeroShotClassification_ACL_ATC_Classes6.ipynb
 
 Contents: Inference results from four ZeroShotClassification models will be stored as .csv files. Model performance will be documented in the notebook.
+
+2. Folder 2 – ACT_INFLUENCE:
+
+Dataset: datasets/ACL_ATC/ATC_INFLUENCE/train.csv
+
+Notebook: Inference_ZeroShotClassification/ZeroShotClassification_ACL_ATC_Classes2.ipynb
+
+Contents: Inference results from four ZeroShotClassification models stored as .csv files. Model performance will be documented in the notebook.
+
+3. Folder 3 – SciCite_Model1:
+
+Datasets:
+datasets/SciCite/ATC/train.csv
+datasets/SciCite/ATC/dev.csv
+datasets/SciCite/ATC/test.csv
+
+Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model1.ipynb
+
+Contents: Model1 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
+
+4. Folder 4 – SciCite_Model2:
+
+Datasets:
+datasets/SciCite/ATC/train.csv
+datasets/SciCite/ATC/dev.csv
+datasets/SciCite/ATC/test.csv
+
+Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model2.ipynb
+
+Contents: Model2 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
+
+5. Folder 5 – SciCite_Model3:
+
+Datasets:
+datasets/SciCite/ATC/train.csv
+datasets/SciCite/ATC/dev.csv
+datasets/SciCite/ATC/test.csv
+
+Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model3.ipynb
+
+Contents: Model3 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
+
+6. Folder 6 – SciCite_Model4:
+
+Datasets:
+datasets/SciCite/ATC/train.csv
+datasets/SciCite/ATC/dev.csv
+datasets/SciCite/ATC/test.csv
+
+Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model4.ipynb
+
+Contents: Model4 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
+
+---
