@@ -4,3 +4,6 @@ The BIP! Citation Classifier is a comprehensive Python library designed to class
 This tool utilises the citation context found within scientific publications, analysing the text surrounding a reference to determine the intent (or purpose) behind the citation. 
 By leveraging a well-established citation classification ontology, the library categorises citations into specific classes, such as whether a citation supports, uses, or extends the work being cited.
 The outputs of the BIP! Citation Classifier are particularly useful for tasks such as citation network analysis, where understanding the nature of each citation can significantly improve the accuracy of various analyses. 
+
+Citation Classifiers in RPIs Calculation for Scientometrics
+This project implements various text mining techniques based on neural networks, focusing on citation intent classification at different semantic levels. It also includes the modification and calculation of Relative Performance Indicators (RPIs) to observe how they are influenced by citation intent. All code is run on Google Colab.
