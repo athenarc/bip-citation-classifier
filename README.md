@@ -74,3 +74,34 @@ Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model4
 Contents: Model4 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
 
 ---
+
+## Part II: SciBERT Model Reproduction
+The SciBERT model is reproduced using PyTorch, following the study’s guidelines. This includes citation intent classification with three and four labeled classes to evaluate the model's ability to capture more granular semantic intent.
+
+#### SciBERT Model - 3 Classes (Background/Method/Result):
+
+Folder Name: SciBERT_classes3
+
+Datasets:
+datasets/SciCite/ATC/train.csv
+datasets/SciCite/ATC/dev.csv
+datasets/SciCite/ATC/test.csv
+
+Notebook: SciBERT_Reproduction/SciBERT_Reproduction_3Classes.ipynb
+
+Contents: Model checkpoints will be stored to allow the best model to be used for inference after validation.
+SciBERT Model - 4 Classes (Background/Method/Result_Supportive/Result_Not_Supportive):
+
+Folder Name: SciBERT_classes4
+
+Datasets:
+datasets/SciCite/train.csv
+datasets/SciCite/dev.csv
+datasets/SciCite/test.csv
+
+Notebook: SciBERT_Reproduction/SciBERT_4Classes.ipynb
+
+Contents: Model checkpoints will be stored for inference after validation.
+
+---
+
