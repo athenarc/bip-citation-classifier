@@ -13,8 +13,10 @@ This project implements various text mining techniques based on neural networks,
 ## Part I: Zero-Shot Classification Models
 Six folders need to be created to store datasets, notebooks, and results of the Zero-Shot Classification Models.
 
-Folder 1 – ACT:
+--Folder 1 – ACT:
 
 Dataset: datasets/ACL_ATC/ATC/train.csv
+
 Notebook: Inference_ZeroShotClassification/ZeroShotClassification_ACL_ATC_Classes6.ipynb
+
 Contents: Inference results from four ZeroShotClassification models will be stored as .csv files. Model performance will be documented in the notebook.
