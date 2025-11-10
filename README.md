@@ -1,134 +1,327 @@
-# BIP! Citation Classifier
+# BIP! Citation Intent Classifier
 
-The BIP! Citation Classifier is a comprehensive Python library designed to classify citations based on their intent, utilizing a range of state-of-the-art algorithms. 
-This tool utilises the citation context found within scientific publications, analysing the text surrounding a reference to determine the intent (or purpose) behind the citation. 
-By leveraging a well-established citation classification ontology, the library categorises citations into specific classes, such as whether a citation supports, uses, or extends the work being cited.
-The outputs of the BIP! Citation Classifier are particularly useful for tasks such as citation network analysis, where understanding the nature of each citation can significantly improve the accuracy of various analyses. 
+[![DOI](https://img.shields.io/badge/DOI-10.1007/978--3--032--05409--8__13-blue.svg)](https://doi.org/10.1007/978-3-032-05409-8_13) [![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
-# Citation Classifiers in RPIs Calculation for Scientometrics
+A production-ready REST API for classifying citation intents in scientific papers using open-source LLMs.
 
-This project implements various text mining techniques based on neural networks, focusing on citation intent classification at different semantic levels. It also includes the modification and calculation of Relative Performance Indicators (RPIs) to observe how they are influenced by citation intent. All code is run on Google Colab.
+## Quick Start
 
-# Project Structure
-## Part I: Zero-Shot Classification Models
-Six folders need to be created to store datasets, notebooks, and results of the Zero-Shot Classification Models.
+### 1. Install Dependencies
 
-1. Folder 1 – ACT:
+```
+cd api
+pip install -r requirements.txt
 
-Dataset: datasets/ACL_ATC/ATC/train.csv
+```
 
-Notebook: Inference_ZeroShotClassification/ZeroShotClassification_ACL_ATC_Classes6.ipynb
+### 2. Start vLLM Server
 
-Contents: Inference results from four ZeroShotClassification models will be stored as .csv files. Model performance will be documented in the notebook.
+```
+pip install vllm
+vllm serve Qwen/Qwen2.5-14B-Instruct --port 8080
 
-2. Folder 2 – ACT_INFLUENCE:
+```
 
-Dataset: datasets/ACL_ATC/ATC_INFLUENCE/train.csv
+> Other OpenAI-compatible servers (TGI, LM Studio, OpenAI) are also supported.
+> 
 
-Notebook: Inference_ZeroShotClassification/ZeroShotClassification_ACL_ATC_Classes2.ipynb
+### 3. Configure
 
-Contents: Inference results from four ZeroShotClassification models stored as .csv files. Model performance will be documented in the notebook.
+Edit `config/config.json` with your server URL and model name.
 
-3. Folder 3 – SciCite_Model1:
+```
+{
+    "inference_api": {
+        "base_url": "http://localhost:8080/v1",
+        "api_key": "",
+        "model_name": "Qwen/Qwen2.5-14B-Instruct"
+    },
+    "dataset": "scicite",
+    "system_prompt_id": 3,
+    "prompting_method": "zero-shot",
+    "examples_method": "1-inline",
+    "examples_seed": 42,
+    "query_template": "1-simple",
+    "temperature": 0.0,
+    "max_tokens": 15
+}
 
-Datasets:
-datasets/SciCite/ATC/train.csv
-datasets/SciCite/ATC/dev.csv
-datasets/SciCite/ATC/test.csv
+```
 
-Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model1.ipynb
+### 4. Start the API
 
-Contents: Model1 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
+```
+# Development
+python src/main.py
 
-4. Folder 4 – SciCite_Model2:
+# Production
+bash scripts/gunicorn.sh
 
-Datasets:
-datasets/SciCite/ATC/train.csv
-datasets/SciCite/ATC/dev.csv
-datasets/SciCite/ATC/test.csv
+```
 
-Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model2.ipynb
+API at: http://localhost:8000
 
-Contents: Model2 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
+Docs at: http://localhost:8000/docs
 
-5. Folder 5 – SciCite_Model3:
+### 5. Test
 
-Datasets:
-datasets/SciCite/ATC/train.csv
-datasets/SciCite/ATC/dev.csv
-datasets/SciCite/ATC/test.csv
+Visit `http://localhost:8000/docs` or:
 
-Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model3.ipynb
+```
+curl -X POST http://localhost:8000/classify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Recent work has shown that neural networks can learn (Smith et al., 2020).",
+    "cite_start": 52,
+    "cite_end": 72
+  }'
 
-Contents: Model3 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
+```
 
-6. Folder 6 – SciCite_Model4:
+## Configuration
 
-Datasets:
-datasets/SciCite/ATC/train.csv
-datasets/SciCite/ATC/dev.csv
-datasets/SciCite/ATC/test.csv
+### Datasets
 
-Notebook: Inference_ZeroShotClassification/ZeroShotClassification_SciCite_model4.ipynb
+**SciCite (3 classes):**
 
-Contents: Model4 inference results stored as .csv files for train, dev, and test datasets. Model performance will be presented in the notebook.
+- `background information` - Background context
+- `method` - Using a method/tool/dataset
+- `results comparison` - Comparing results
 
----
+**ACL-ARC (6 classes):**
 
-## Part II: SciBERT Model Reproduction
-The SciBERT model is reproduced using PyTorch, following the study’s guidelines. This includes citation intent classification with three and four labeled classes to evaluate the model's ability to capture more granular semantic intent.
+- `BACKGROUND`, `MOTIVATION`, `USES`, `EXTENDS`, `COMPARES_CONTRASTS`, `FUTURE`
 
-#### SciBERT Model - 3 Classes (Background/Method/Result):
+### Prompting Methods
 
-Folder Name: SciBERT_classes3
+- `zero-shot`: No examples (fastest)
+- `one-shot`: 1 example per class
+- `few-shot`: 5 examples per class (recommended)
+- `many-shot`: 10 examples per class (best accuracy)
 
-Datasets:
-datasets/SciCite/ATC/train.csv
-datasets/SciCite/ATC/dev.csv
-datasets/SciCite/ATC/test.csv
+**Example injection:**
 
-Notebook: SciBERT_Reproduction/SciBERT_Reproduction_3Classes.ipynb
+- `1-inline`: Appends to system prompt
+- `2-roles`: User/assistant conversation pairs
 
-Contents: Model checkpoints will be stored to allow the best model to be used for inference after validation.
+### System Prompts
 
-#### SciBERT Model - 4 Classes (Background/Method/Result_Supportive/Result_Not_Supportive):
+- **SP1**: Minimal
+- **SP2**: Structured
+- **SP3**: Explicit (recommended)
 
-Folder Name: SciBERT_classes4
+## API Endpoints
 
-Datasets:
-datasets/SciCite/train.csv
-datasets/SciCite/dev.csv
-datasets/SciCite/test.csv
+### POST /classify
 
-Notebook: SciBERT_Reproduction/SciBERT_4Classes.ipynb
+Classify a citation's intent.
 
-Contents: Model checkpoints will be stored for inference after validation.
+```
+{
+  "text": "Full text containing citation",
+  "cite_start": 100,
+  "cite_end": 120
+}
 
----
+```
 
-## Part III: RPI Calculation Based on Citation Intent Semantics
-The RPIs (Relative Performance Indicators) will be calculated based on the citation intent semantics.
+### GET /config
 
-Folder Name: RPIs
+View current configuration.
 
-Datasets:
-datasets/SciCite/train.csv
-datasets/SciCite/dev.csv
-datasets/SciCite/test.csv
+### GET /inspect-prompt
 
-Notebook: Citation_Intent_in_RPIs/RPIs.ipynb
-Contents: This notebook will calculate RPIs based on the semantics of citation intent.
+Inspect system prompt with examples.
 
----
+### GET /health
 
-# How to Run
-To replicate the results:
+Health check.
 
-Clone this repository.
+### GET /docs
 
-Download the datasets from the mentioned paths.
+Interactive Swagger UI documentation.
 
-Run the notebooks in Google Colab using VG100 GPU or your local environment.
+## Usage Examples
 
-Make sure to install all required dependencies listed in each notebook before running them.
+### Python
 
+```
+import requests
+
+response = requests.post(
+    "http://localhost:8000/classify",
+    json={
+        "text": "... (Smith et al., 2020).",
+        "cite_start": 52,
+        "cite_end": 72
+    }
+)
+print(response.json()["predicted_class"])
+
+```
+
+### cURL
+
+```
+curl -X POST http://localhost:8000/classify \
+  -H "Content-Type: application/json" \
+  -d @tests/example_input.json
+
+```
+
+## Production Deployment
+
+```
+# Start
+bash scripts/gunicorn.sh
+
+# Stop
+bash scripts/stop.sh
+
+```
+
+**Environment variables** (`.env`):
+
+```
+API_HOST=0.0.0.0
+API_PORT=8000
+LOG_LEVEL=info
+WORKERS=4
+
+```
+
+**Logs:**
+
+- Access: `logs/access.log`
+- Error: `logs/error.log`
+- PID: `logs/gunicorn.pid`
+
+## Verification
+
+```
+# Verify prompting setup
+python scripts/verify_prompting.py
+
+# Verify directory structure
+python scripts/verify_structure.py
+
+# Run tests
+python tests/test_api.py
+
+```
+
+## Troubleshooting
+
+### Startup Failures
+
+The `gunicorn.sh` script includes automatic diagnostics:
+
+**Port already in use:**
+```bash
+# Script will show which process is using the port
+# Kill it with:
+kill $(lsof -t -i:8000)
+```
+
+**Import errors:**
+```bash
+# Check logs/import_error.log for details
+cat logs/import_error.log
+
+# Test imports manually:
+python -c "from src.main import app"
+```
+
+**Process dies immediately:**
+```bash
+# Check error logs:
+tail -20 logs/error.log
+
+# Run in foreground for debugging:
+gunicorn src.main:app --bind 0.0.0.0:8000 --log-level debug
+```
+
+### Runtime Issues
+
+**Port conflicts:**
+```bash
+uvicorn src.main:app --port 8001
+```
+
+**Connection issues:**
+- Check server: `curl http://localhost:8080/v1/models`
+- Verify `base_url` ends with `/v1`
+
+**Invalid predictions:**
+- Use `temperature: 0.0`
+- Try `system_prompt_id: 3`
+- Use `query_template: "2-qa-multiple-choice"`
+
+## Citation Format
+
+Citations are preprocessed with `@@CITATION@@` tag:
+
+```
+Input:  "... can learn (Smith et al., 2020)."
+Output: "... can learn @@CITATION@@."
+
+```
+
+## Architecture
+
+```
+api/
+├── config/           # Configuration files
+├── data/             # Training data for few-shot
+├── src/              # Source code
+├── scripts/          # Deployment scripts
+├── tests/            # Test suite
+└── README.md
+
+```
+
+## Development
+
+```
+# Auto-reload
+uvicorn src.main:app --reload
+
+# Debug logging
+LOG_LEVEL=debug python src.main.py
+
+```
+
+## License
+
+Released under [GNU GPL v2.0](LICENSE).
+
+## Who do I talk to?
+
+This repository is maintained by **Paris Koloveas** from Athena RC
+
+* Email: <pkoloveas@athenarc.gr>
+
+## Citing this work
+
+If you utilize any of the processes and scripts in this repository, please cite the original work behind this API in the following way:
+
+```bibtex
+@inproceedings{10.1007/978-3-032-05409-8_13,
+  author    = {Koloveas, Paris
+               and Chatzopoulos, Serafeim
+               and Vergoulis, Thanasis
+               and Tryfonopoulos, Christos},
+  editor    = {Balke, Wolf-Tilo
+               and Golub, Koraljka
+               and Manolopoulos, Yannis
+               and Stefanidis, Kostas
+               and Zhang, Zheying},
+  title     = {Can LLMs Predict Citation Intent? An Experimental Analysis of In-Context Learning and Fine-Tuning on Open LLMs},
+  booktitle = {Linking Theory and Practice of Digital Libraries},
+  year      = {2026},
+  publisher = {Springer Nature Switzerland},
+  address   = {Cham},
+  pages     = {207--224},
+  isbn      = {978-3-032-05409-8}
+}
+```
