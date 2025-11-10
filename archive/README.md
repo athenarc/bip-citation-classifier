@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This part of the project is ***ARCHIVED*** and is not maintained!
+
 # BIP! Citation Classifier
 
 The BIP! Citation Classifier is a comprehensive Python library designed to classify citations based on their intent, utilizing a range of state-of-the-art algorithms. 
