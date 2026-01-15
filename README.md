@@ -301,6 +301,10 @@ This repository is maintained by **Paris Koloveas** from Athena RC
 
 * Email: <pkoloveas@athenarc.gr>
 
+## Acknowledgements
+
+Part of this work utilized Amazon's cloud computing services, which were made available via GRNET under the OCRE Cloud framework, providing Amazon Web Services for the Greek Academic and Research Community.
+
 ## Citing this work
 
 If you utilize any of the processes and scripts in this repository, please cite the original work behind this API in the following way:
